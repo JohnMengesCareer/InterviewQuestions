@@ -1,8 +1,4 @@
 public class BinaryNode<T extends Comparable<T>> {
-	private T value;
-	private BinaryNode<T> left = null;
-	private BinaryNode<T> right = null;
-	
 	public BinaryNode(T value) {
 		super();
 		this.value = value;
@@ -33,4 +29,8 @@ public class BinaryNode<T extends Comparable<T>> {
 	public void setRight(BinaryNode<T> right) {
 		this.right = right;
 	}
+	
+	private T value;
+	private BinaryNode<T> left = null;
+	private BinaryNode<T> right = null;
 }

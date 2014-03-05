@@ -3,6 +3,11 @@ import java.io.PrintWriter;
 import java.util.Random;
 
 public class BinarySearchTree<T extends Comparable<T>> {
+	public BinarySearchTree(String name) {
+		super();
+		this.name = name;
+	}
+
 	public void insert(T value)
 	{
 		BinaryNode<T> node = new BinaryNode<>(value);
@@ -11,13 +16,21 @@ public class BinarySearchTree<T extends Comparable<T>> {
 	
 	public void dump() throws FileNotFoundException
 	{
-		PrintWriter writer = new PrintWriter("BST.gv");
-		writer.println("digraph Tree {");
+		PrintWriter writer = new PrintWriter(name + ".gv");
+		writer.printf("digraph %s {", name);
 		dump(root, writer);
 		writer.println("}");
 		writer.close();
 	}
+	
+	public LinkedList<T> toLinkedList(String name)
+	{
+		LinkedList<T> result = new LinkedList<>(name);
+		toLinkedList(root, result);
+		return result;
+	}
 
+	private final String name;
 	private BinaryNode<T> root = null;
 	
 	private void dump(BinaryNode<T> node, PrintWriter writer)
@@ -46,19 +59,40 @@ public class BinarySearchTree<T extends Comparable<T>> {
 		return root;
 	}
 	
+	private void toLinkedList(BinaryNode<T> node, LinkedList<T> result) {
+		if (node == null) return;
+		toLinkedList(node.getLeft(), result);
+		result.append(new Link<T>(node.getValue()));
+		toLinkedList(node.getRight(), result);
+	}
+
 	public static void main(String[] args) throws FileNotFoundException {
-		testInsert(10);
+//		testInsert("bst", 10);
+		testToLinkedList("bst", "ll", 10);
 	}
 	
-	public static void testInsert(int n) throws FileNotFoundException
+	public static void testInsert(String name, int n) throws FileNotFoundException
 	{
-		BinarySearchTree<Integer> bst = new BinarySearchTree<>();
+		BinarySearchTree<Integer> bst = getBST(name, n);
+		bst.dump();
+	}
+	
+	public static void testToLinkedList(String bstName, String llName, int n) throws FileNotFoundException
+	{
+		BinarySearchTree<Integer> bst = getBST(bstName, n);
+		bst.dump();
+		LinkedList<Integer> ll = bst.toLinkedList(llName);
+		ll.dump();
+	}
+	
+	private static BinarySearchTree<Integer> getBST(String name, int n)
+	{
+		BinarySearchTree<Integer> bst = new BinarySearchTree<>(name);
 		Random random = new Random();
 		for (int i = 0; i < n; i++)
 		{
 			bst.insert(random.nextInt(n));
 		}
-		bst.dump();
+		return bst;
 	}
-
 }
