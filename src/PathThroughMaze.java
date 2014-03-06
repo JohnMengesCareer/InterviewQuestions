@@ -149,7 +149,7 @@ public class PathThroughMaze {
 		System.out.printf("%s\n", path);
 		System.out.println();
 		maze.dump();
-		System.out.println(maze.pathExists(path + "a"));
+		System.out.println(maze.pathExists(path));
 	}
 
 }
